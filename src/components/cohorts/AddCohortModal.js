@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+
 import M from 'materialize-css/dist/js/materialize.min.js';
 
-import { connect } from 'react-redux';
-import { addCohorts } from '../../actions/cohortAction';
+import { useDispatch } from 'react-redux';
+import { fetchAddCohorts } from '../../features/cohort/cohortSlice';
 
-function AddCohortModal({ addCohorts }) {
+function AddCohortModal() {
+  const dispatch = useDispatch();
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
@@ -17,7 +19,7 @@ function AddCohortModal({ addCohorts }) {
         firstName,
         lastName,
       };
-      addCohorts(newCohort);
+      dispatch(fetchAddCohorts(newCohort));
       M.toast({ html: `${firstName} ${lastName} has been added` });
       // clear fileds
       setFirstName('');
@@ -61,11 +63,7 @@ function AddCohortModal({ addCohorts }) {
         </div>
       </div>
       <div className='modal-footer'>
-        <a
-          href='#!'
-          className='modal-close waves-effect waves-light btn'
-          onClick={onSubmit}
-        >
+        <a href='#!' className='modal-close waves-effect waves-light btn' onClick={onSubmit}>
           Enter
         </a>
       </div>
@@ -77,8 +75,4 @@ const modelStyle = {
   height: '70%',
 };
 
-AddCohortModal.prototype = {
-  addCohorts: PropTypes.func.isRequired,
-};
-
-export default connect(null, { addCohorts })(AddCohortModal);
+export default AddCohortModal;

@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
-import { connect } from 'react-redux';
-import { getCohorts } from '../../actions/cohortAction';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCohorts } from '../../features/cohort/cohortSlice';
 
-function CohortsSelectOption({ cohorts: { cohorts, loading }, getCohorts }) {
+function CohortsSelectOption() {
+  const { cohorts, loading } = useSelector(state => state.cohort);
+  const dispatch = useDispatch();
   useEffect(() => {
-    getCohorts();
+    dispatch(fetchCohorts());
     // eslint-disable-next-line
   }, []);
   return (
@@ -20,13 +21,4 @@ function CohortsSelectOption({ cohorts: { cohorts, loading }, getCohorts }) {
   );
 }
 
-CohortsSelectOption.prototype = {
-  cohort: PropTypes.object.isRequired,
-  getCohorts: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => ({
-  cohorts: state.cohort,
-});
-
-export default connect(mapStateToProps, { getCohorts })(CohortsSelectOption);
+export default CohortsSelectOption;

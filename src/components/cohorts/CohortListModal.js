@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import CohortItem from './CohortItem';
-import PropTypes from 'prop-types';
 
-import { connect } from 'react-redux';
-import { getCohorts } from '../../actions/cohortAction';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCohorts } from '../../features/cohort/cohortSlice';
 
-function CohortListModal({ cohorts: { cohorts, loading }, getCohorts }) {
+function CohortListModal() {
+  const { cohorts, loading } = useSelector(state => state.cohort);
+  const dispatch = useDispatch();
   useEffect(() => {
-    getCohorts();
+    dispatch(fetchCohorts());
     // eslint-disable-next-line
   }, []);
 
@@ -18,21 +19,11 @@ function CohortListModal({ cohorts: { cohorts, loading }, getCohorts }) {
         <ul className='collection striped'>
           {!loading &&
             cohorts !== null &&
-            cohorts.map(cohort => (
-              <CohortItem cohort={cohort} key={cohort.id} />
-            ))}
+            cohorts.map(cohort => <CohortItem cohort={cohort} key={cohort.id} />)}
         </ul>
       </div>
     </div>
   );
 }
-CohortListModal.prototype = {
-  cohort: PropTypes.object.isRequired,
-  getCohorts: PropTypes.func.isRequired,
-};
 
-const mapStateToProps = state => ({
-  cohorts: state.cohort,
-});
-
-export default connect(mapStateToProps, { getCohorts })(CohortListModal);
+export default CohortListModal;

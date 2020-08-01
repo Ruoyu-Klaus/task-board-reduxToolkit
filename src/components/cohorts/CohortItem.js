@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import M from 'materialize-css/dist/js/materialize.min.js';
 
-import { connect } from 'react-redux';
-import { deleteCohort } from '../../actions/cohortAction';
+import { useDispatch } from 'react-redux';
+import { fetchDeleteCohort } from '../../features/cohort/cohortSlice';
 
-function CohortItem({ cohort, deleteCohort }) {
+function CohortItem({ cohort }) {
+  const dispatch = useDispatch();
   const onDelete = () => {
-    deleteCohort(cohort.id);
+    dispatch(fetchDeleteCohort(cohort.id));
     M.toast({ html: `Cohort Deleted` });
   };
   return (
@@ -23,7 +24,6 @@ function CohortItem({ cohort, deleteCohort }) {
 }
 CohortItem.prototype = {
   cohort: PropTypes.object.isRequired,
-  deleteCohort: PropTypes.func.isRequired,
 };
 
-export default connect(null, { deleteCohort })(CohortItem);
+export default CohortItem;
